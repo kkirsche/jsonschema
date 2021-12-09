@@ -46,11 +46,7 @@ def additionalProperties(validator, aP, instance, schema):
             yield from validator.descend(instance[extra], aP, path=extra)
     elif not aP and extras:
         if "patternProperties" in schema:
-            if len(extras) == 1:
-                verb = "does"
-            else:
-                verb = "do"
-
+            verb = "does" if len(extras) == 1 else "do"
             joined = ", ".join(repr(each) for each in sorted(extras))
             patterns = ", ".join(
                 repr(each) for each in sorted(schema["patternProperties"])
@@ -277,7 +273,7 @@ def dependentSchemas(validator, dependentSchemas, instance, schema):
 
 
 def enum(validator, enums, instance, schema):
-    if instance == 0 or instance == 1:
+    if instance in [0, 1]:
         unbooled = unbool(instance)
         if all(unbooled != unbool(each) for each in enums):
             yield ValidationError(f"{instance!r} is not one of {enums!r}")

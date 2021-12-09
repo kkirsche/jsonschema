@@ -36,7 +36,7 @@ class FormatChecker(object):
         if formats is None:
             self.checkers = self.checkers.copy()
         else:
-            self.checkers = dict((k, self.checkers[k]) for k in formats)
+            self.checkers = {k: self.checkers[k] for k in formats}
 
     def __repr__(self):
         return "<FormatChecker checkers={}>".format(sorted(self.checkers))

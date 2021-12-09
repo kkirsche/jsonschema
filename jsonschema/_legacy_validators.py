@@ -180,20 +180,18 @@ def type_draft3(validator, types, instance, schema):
             if not errors:
                 return
             all_errors.extend(errors)
-        else:
-            if validator.is_type(instance, type):
-                return
-    else:
-        reprs = []
-        for type in types:
-            try:
-                reprs.append(repr(type["name"]))
-            except Exception:
-                reprs.append(repr(type))
-        yield ValidationError(
-            f"{instance!r} is not of type {', '.join(reprs)}",
-            context=all_errors,
-        )
+        elif validator.is_type(instance, type):
+            return
+    reprs = []
+    for type in types:
+        try:
+            reprs.append(repr(type["name"]))
+        except Exception:
+            reprs.append(repr(type))
+    yield ValidationError(
+        f"{instance!r} is not of type {', '.join(reprs)}",
+        context=all_errors,
+    )
 
 
 def contains_draft6_draft7(validator, contains, instance, schema):

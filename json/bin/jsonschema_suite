@@ -39,8 +39,7 @@ def files(paths):
 
 def groups(paths):
     for test_file in files(paths):
-        for group in test_file:
-            yield group
+        yield from test_file
 
 
 def cases(paths):
@@ -97,7 +96,7 @@ class SanityTests(unittest.TestCase):
 
     def test_all_descriptions_are_unique(self):
         for group in groups(self.test_files):
-            descriptions = set(test["description"] for test in group["tests"])
+            descriptions = {test["description"] for test in group["tests"]}
             self.assertEqual(
                 len(descriptions),
                 len(group["tests"]),
